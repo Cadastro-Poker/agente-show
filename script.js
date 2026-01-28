@@ -74,3 +74,30 @@ if (suits) {
     suits.style.opacity = suits.style.opacity === '1' ? '0.5' : '1';
   }, 800);
 }
+
+
+document.getElementById('formCadastro').addEventListener('submit', function(e) {
+  e.preventDefault(); // impede o reload da página
+
+  const nome = document.getElementById('nome').value;
+  const email = document.getElementById('email').value;
+
+  fetch('https://n8n.localtest.me/webhook/cadastro-site', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      nome: nome,
+      email: email,
+      whatsapp: telefone,
+      data_nascimento: data_nascimento
+    })
+  })
+  .then(() => {
+    alert('Cadastro enviado com sucesso!');
+  })
+  .catch(() => {
+    alert('Erro ao enviar cadastro');
+  });
+});

@@ -87,6 +87,21 @@ document.getElementById('formCadastro').addEventListener('submit', function (e) 
     enviadoEm: new Date().toISOString()
   };
 
+
+fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(dadosDoFormulario)
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Erro ao enviar cadastro:', error));
+
+
+
+
+  /* 
+  para ambiente de teste
   fetch('https://n8n.localtest.me/webhook/cadastro-site', {
     method: 'POST',
     headers: {
@@ -101,6 +116,6 @@ document.getElementById('formCadastro').addEventListener('submit', function (e) 
   })
   .catch(error => {
     alert('Erro ao enviar cadastro. Tente novamente.');
-    console.error(error);
+    console.error(error); */
   });
 });

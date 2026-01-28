@@ -82,7 +82,7 @@ document.getElementById('formCadastro').addEventListener('submit', function(e) {
   const nome = document.getElementById('nome').value;
   const email = document.getElementById('email').value;
 
-  fetch('https://n8n.localtest.me/webhook-test/cadastro-site', {
+  fetch('https://n8n.localtest.me/webhook/cadastro-site', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

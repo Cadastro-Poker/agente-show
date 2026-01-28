@@ -76,28 +76,31 @@ if (suits) {
 }
 
 
-document.getElementById('formCadastro').addEventListener('submit', function(e) {
-  e.preventDefault(); // impede o reload da página
+document.getElementById('formCadastro').addEventListener('submit', function (e) {
+  e.preventDefault(); // impede recarregar a página
 
-  const nome = document.getElementById('nome').value;
-  const email = document.getElementById('email').value;
+  const dados = {
+    nome: document.getElementById('nome').value,
+    email: document.getElementById('email').value,
+    telefone: document.getElementById('telefone').value,
+    data_nascimento: document.getElementById('data-nascimento').value,
+    enviadoEm: new Date().toISOString()
+  };
 
   fetch('https://n8n.localtest.me/webhook/cadastro-site', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      nome: nome,
-      email: email,
-      whatsapp: telefone,
-      data_nascimento: data_nascimento
-    })
+    body: JSON.stringify(dados)
   })
-  .then(() => {
+  .then(response => {
+    if (!response.ok) throw new Error('Erro');
     alert('Cadastro enviado com sucesso!');
+    document.getElementById('formCadastro').reset();
   })
-  .catch(() => {
-    alert('Erro ao enviar cadastro');
+  .catch(error => {
+    alert('Erro ao enviar cadastro. Tente novamente.');
+    console.error(error);
   });
 });

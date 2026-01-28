@@ -82,20 +82,22 @@ document.getElementById('formCadastro').addEventListener('submit', function (e) 
   const dados = {
     nome: document.getElementById('nome').value,
     email: document.getElementById('email').value,
-    telefone: document.getElementById('telefone').value,
+    whatsapp: document.getElementById('whatsapp').value,
     data_nascimento: document.getElementById('data-nascimento').value,
     enviadoEm: new Date().toISOString()
   };
 
+  fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(dados)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Erro ao enviar cadastro:', error));
+});
 
-fetch('https://abc123.ngrok-free.app/webhook/cadastro-site', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(dadosDoFormulario)
-})
-.then(response => response.json())
-.then(data => console.log(data))
-.catch(error => console.error('Erro ao enviar cadastro:', error));
+
 
 
 

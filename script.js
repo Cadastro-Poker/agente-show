@@ -79,46 +79,25 @@ if (suits) {
 document.getElementById('formCadastro').addEventListener('submit', function (e) {
   e.preventDefault(); // impede recarregar a página
 
+  // Pega os valores do formulário
   const dados = {
     nome: document.getElementById('nome').value,
     email: document.getElementById('email').value,
-    whatsapp: document.getElementById('whatsapp').value,
+    whatsapp: document.getElementById('whatsapp').value, // id do input WhatsApp no HTML
     data_nascimento: document.getElementById('data-nascimento').value,
     enviadoEm: new Date().toISOString()
   };
 
+  // Envia para o webhook do n8n via ngrok
   fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(dados)
-})
-
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Erro ao enviar cadastro:', error));
-});
-
-
-
-
-
-
-  /* 
-  para ambiente de teste
-  fetch('https://n8n.localtest.me/webhook/cadastro-site', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(dados)
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
   })
   .then(response => {
-    if (!response.ok) throw new Error('Erro');
-    alert('Cadastro enviado com sucesso!');
-    document.getElementById('formCadastro').reset();
+      if (!response.ok) throw new Error('Erro na requisição');
+      return response.json();
   })
-  .catch(error => {
-    alert('Erro ao enviar cadastro. Tente novamente.');
-    console.error(error); */
-  });
+  .then(data => console.log('Resposta do n8n:', data))
+  .catch(error => console.error('Erro ao enviar cadastro:', error));
 });

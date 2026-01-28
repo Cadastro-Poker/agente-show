@@ -88,7 +88,7 @@ document.getElementById('formCadastro').addEventListener('submit', function (e) 
   };
 
 
-fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
+fetch('https://abc123.ngrok-free.app/webhook/cadastro-site', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(dadosDoFormulario)

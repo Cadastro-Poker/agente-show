@@ -88,10 +88,11 @@ document.getElementById('formCadastro').addEventListener('submit', function (e) 
   };
 
   fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(dados)
-  })
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(dados)
+})
+
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.error('Erro ao enviar cadastro:', error));

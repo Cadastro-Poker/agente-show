@@ -143,16 +143,13 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       form.querySelector('button[type="submit"]').disabled = true;
 
-      const response = await fetch(
-        'https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/formulario-site',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        }
-      );
+      const response = await fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+      });
 
       if (!response.ok) {
         throw new Error('Erro ao enviar o formulário');

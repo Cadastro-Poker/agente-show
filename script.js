@@ -57,15 +57,7 @@ if (scrollContainer) {
   });
 }
 
-// ===== Formulário com alerta divertido =====
-const form = document.querySelector('.form');
-if (form) {
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    alert('🎉 Bem-vindo ao Agente Show! Seu cadastro foi enviado com sucesso.');
-    form.reset();
-  });
-}
+
 
 // ===== Efeito de cartas piscando no rodapé =====
 const suits = document.querySelector('.suits');
@@ -74,7 +66,6 @@ if (suits) {
     suits.style.opacity = suits.style.opacity === '1' ? '0.5' : '1';
   }, 800);
 }
-
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -104,8 +95,15 @@ document.addEventListener('DOMContentLoaded', function () {
       body: JSON.stringify(dados)
     })
     .then(res => res.json())
-    .then(data => console.log('Resposta do n8n:', data))
-    .catch(err => console.error('Erro:', err));
+    .then(data => {
+      alert('🎉 Cadastro enviado com sucesso!');
+      form.reset(); // ✅ reset SOMENTE depois do envio
+    })
+    .catch(err => {
+      console.error('Erro:', err);
+      alert('❌ Erro ao enviar cadastro');
+    });
   });
 
 });
+

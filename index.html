@@ -133,43 +133,90 @@
     <div class="container">
       <h2>Faça seu cadastro</h2>
       <p class="section-subtitle">Entre para a casa e comece a jogar hoje mesmo.</p>
-      <form id="formCadastro" class="form">
-        <div class="form__row">
-          <label for="nome">Nome Completo</label>
-          <input id="nome" type="text" placeholder="Seu nome" />
-        </div>
-        <div class="form__row">
-          <label for="email">E-mail</label>
-          <input id="email" type="email" placeholder="seuemail@exemplo.com" />
-        </div>
-        <div class="form__row">
-          <label for="whatsapp">WhatsApp</label>
-          <input id="whatsapp" type="tel" placeholder="(31) 9 0000-0000" />
-        </div>
+      
+      <form class="form" id="form-cadastro">
 
-        <div class="form__row">
-          <label for="data-nascimento">Data de Nascimento</label>
-          <input id="data-nascimento" name="data_nascimento" type="date" placeholder="DD/MM/AAAA" required />
-        </div>
+  <div class="form__row">
+    <label for="nome">Nome completo</label>
+    <input
+      id="nome"
+      name="nome"
+      type="text"
+      placeholder="Seu nome completo"
+      required
+    />
+  </div>
 
-        <div class="form__row">
-          <label for="id-usuario">ID do Usuário</label>
-          <input id="id-usuario" name="id_usuario" type="text" placeholder="Ex: jogador123" required />
-        </div>
+  <div class="form__row">
+    <label for="email">E-mail</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      placeholder="seu@email.com"
+      required
+    />
+  </div>
 
-        <div class="form__row">
-          <label for="app">APP</label>
-          <select id="app" name="app" required>
-            <option value="">Selecione o APP</option>
-            <option value="Suprema Poker">Suprema Poker</option>
-            <option value="PPPoker">PPPoker</option>
-            <option value="KKPoker">KKPoker</option>
-          </select>
-        </div>
+  <div class="form__row">
+    <label for="whatsapp">WhatsApp (com DDD)</label>
+    <input
+      id="whatsapp"
+      name="whatsapp"
+      type="tel"
+      inputmode="numeric"
+      pattern="[0-9]{11}"
+      placeholder="11999999999"
+      maxlength="11"
+      required
+    />
+  </div>
+
+  <div class="form__row">
+    <label for="data-nascimento">Data de nascimento</label>
+    <input
+      id="data-nascimento"
+      name="data_nascimento"
+      type="date"
+      required
+    />
+  </div>
+
+  <div class="form__row">
+    <label for="user-id">ID do usuário</label>
+    <input
+      id="user-id"
+      name="user_id"
+      type="text"
+      placeholder="Ex: 123456"
+      required
+    />
+  </div>
+
+  <div class="form__row">
+    <label for="app">App</label>
+    <select
+      id="app"
+      name="app"
+      required
+    >
+      <option value="" disabled selected>Selecione o app</option>
+      <option value="Suprema Poker">Suprema Poker</option>
+      <option value="PPPoker">PPPoker</option>
+      <option value="KKPoker">KKPoker</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn--primary">
+    Enviar cadastro
+  </button>
+
+</form>
+
+      
 
 
-        <button id="cadastroBtn" class="btn btn--primary" type="submit">Enviar</button>
-      </form>
+
     </div>
   </section>
 

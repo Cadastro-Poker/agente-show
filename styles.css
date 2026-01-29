@@ -294,3 +294,35 @@ body {
     .btn {
       animation: pulseShadow 2s infinite;
     }
+
+    /* Select (lista APP) */
+.form select {
+  background: #0f0f12;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 12px 14px;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Placeholder da opção vazia */
+.form select option[value=""] {
+  color: #7a7a86;
+}
+
+/* Hover / focus */
+.form select:hover,
+.form select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--outline);
+}
+
+/* Opções do dropdown */
+.form select option {
+  background: var(--bg);
+  color: var(--text);
+}

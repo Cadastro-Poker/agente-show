@@ -67,45 +67,128 @@ if (suits) {
   }, 800);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('form-cadastro');
 
-  const form = document.getElementById('formCadastro');
+  if (!form) return;
 
-  if (!form) {
-    console.error('Formulário não encontrado!');
-    return;
-  }
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
+    // === Captura dos campos ===
+    const nomeInput = form.querySelector('[name="nome"]');
+    const emailInput = form.querySelector('[name="email"]');
+    const whatsappInput = form.querySelector('[name="whatsapp"]');
+    const dataNascimentoInput = form.querySelector('[name="data_nascimento"]');
+    const userIdInput = form.querySelector('[name="user_id"]');
+    const appInput = form.querySelector('[name="app"]');
 
-    const dados = {
-      nome: document.getElementById('nome').value,
-      email: document.getElementById('email').value,
-      whatsapp: document.getElementById('whatsapp').value,
-      id_usuario: document.getElementById('id-usuario').value,
-      app: document.getElementById('app').value,
-      data_nascimento: document.getElementById('data-nascimento').value,
+    // === Normalizações ===
+    const nome = normalizarNome(nomeInput.value);
+    const email = emailInput.value.trim().toLowerCase();
+    const whatsapp = limparNumero(whatsappInput.value);
+    const dataNascimento = dataNascimentoInput.value;
+    const userId = userIdInput.value.trim();
+    const app = appInput.value;
+
+    // === Validações ===
+    if (!nome) {
+      alert('Informe seu nome completo.');
+      nomeInput.focus();
+      return;
+    }
+
+    if (!validarEmail(email)) {
+      alert('Informe um e-mail válido.');
+      emailInput.focus();
+      return;
+    }
+
+    if (!/^\d{11}$/.test(whatsapp)) {
+      alert('O WhatsApp deve conter exatamente 11 números (DDD + número).');
+      whatsappInput.focus();
+      return;
+    }
+
+    if (!dataNascimento) {
+      alert('Informe sua data de nascimento.');
+      dataNascimentoInput.focus();
+      return;
+    }
+
+    if (!userId) {
+      alert('Informe o ID do usuário.');
+      userIdInput.focus();
+      return;
+    }
+
+    if (!app) {
+      alert('Selecione o app.');
+      appInput.focus();
+      return;
+    }
+
+    // === Payload para o n8n ===
+    const payload = {
+      nome,
+      email,
+      whatsapp,
+      data_nascimento: dataNascimento,
+      user_id: userId,
+      app,
       enviadoEm: new Date().toISOString()
     };
 
-    console.log('DADOS ENVIADOS:', dados);
+    // === Envio ===
+    try {
+      form.querySelector('button[type="submit"]').disabled = true;
 
-    fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dados)
-    })
-      .then(res => res.json())
-      .then(data => {
-        alert('🎉 Cadastro enviado com sucesso!');
-        form.reset(); // ✅ reset SOMENTE depois do envio
-      })
-      .catch(err => {
-        console.error('Erro:', err);
-        alert('❌ Erro ao enviar cadastro');
-      });
+      const response = await fetch(
+        'https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/formulario-site',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar o formulário');
+      }
+
+      alert('Cadastro enviado com sucesso!');
+      form.reset();
+
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao enviar. Tente novamente em instantes.');
+    } finally {
+      form.querySelector('button[type="submit"]').disabled = false;
+    }
   });
 
+  // ===== Funções auxiliares =====
+
+  function normalizarNome(nome) {
+    return nome
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .map(p =>
+        p.charAt(0).toUpperCase() + p.slice(1)
+      )
+      .join(' ');
+  }
+
+  function limparNumero(valor) {
+    return valor.replace(/\D/g, '');
+  }
+
+  function validarEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
 });
+
 

@@ -67,10 +67,14 @@ if (suits) {
   }, 800);
 }
 
+/* evento de cadastro */
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-cadastro');
-
-  if (!form) return;
+  if (!form) {
+    console.error('Formulário não encontrado');
+    return;
+  }
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -128,71 +132,61 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-
-  const form = document.getElementById('formCadastro');
-
-  if (!form) {
-    console.error('Formulário não encontrado');
-    return;
-  }
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    // 👉 DADOS PRECISAM NASCER AQUI
+    // === Payload ===
     const dados = {
-      nome: document.getElementById('nome').value,
-      email: document.getElementById('email').value,
-      whatsapp: document.getElementById('whatsapp').value,
-      data_nascimento: document.getElementById('data-nascimento').value,
+      nome,
+      email,
+      whatsapp,
+      data_nascimento: dataNascimento,
+      user_id: userId,
+      app,
       enviadoEm: new Date().toISOString()
     };
 
     console.log('DADOS ENVIADOS:', dados);
 
-    fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dados)
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('Erro no webhook');
-      return res.json();
-    })
-    .then(data => {
-      console.log('Resposta do n8n:', data);
-    })
-    .catch(err => {
-      console.error('Erro ao enviar:', err);
-    });
+    // === Envio para o n8n ===
+    try {
+      const res = await fetch(
+        'https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dados)
+        }
+      );
 
+      if (!res.ok) throw new Error('Erro ao enviar para o n8n');
+
+      const resposta = await res.json();
+      console.log('Resposta do n8n:', resposta);
+
+      alert('Cadastro enviado com sucesso!');
+      form.reset();
+
+    } catch (err) {
+      console.error('Erro no envio:', err);
+      alert('Erro ao enviar cadastro. Tente novamente.');
+    }
   });
-
 });
 
-  // ===== Funções auxiliares =====
+// ===== Funções auxiliares =====
 
-  function normalizarNome(nome) {
-    return nome
-      .trim()
-      .toLowerCase()
-      .split(/\s+/)
-      .map(p =>
-        p.charAt(0).toUpperCase() + p.slice(1)
-      )
-      .join(' ');
-  }
+function normalizarNome(nome) {
+  return nome
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+    .join(' ');
+}
 
-  function limparNumero(valor) {
-    return valor.replace(/\D/g, '');
-  }
+function limparNumero(valor) {
+  return valor.replace(/\D/g, '');
+}
 
-  function validarEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-});
-
+function validarEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 

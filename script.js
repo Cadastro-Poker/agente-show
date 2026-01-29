@@ -76,30 +76,36 @@ if (suits) {
 }
 
 
-document.getElementById('formCadastro').addEventListener('submit', function (e) {
-  e.preventDefault(); // impede recarregar a página
+document.addEventListener('DOMContentLoaded', function () {
 
-  // Pega os valores do formulário
-  const dados = {
-    nome: document.getElementById('nome').value,
-    email: document.getElementById('email').value,
-    whatsapp: document.getElementById('whatsapp').value, // id do input WhatsApp no HTML
-    data_nascimento: document.getElementById('data-nascimento').value,
-    enviadoEm: new Date().toISOString()
-  };
+  const form = document.getElementById('formCadastro');
 
-console.log('DADOS ENVIADOS:', dados);
+  if (!form) {
+    console.error('Formulário não encontrado!');
+    return;
+  }
 
-  // Envia para o webhook do n8n via ngrok
-  fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const dados = {
+      nome: document.getElementById('nome').value,
+      email: document.getElementById('email').value,
+      whatsapp: document.getElementById('whatsapp').value,
+      data_nascimento: document.getElementById('data-nascimento').value,
+      enviadoEm: new Date().toISOString()
+    };
+
+    console.log('DADOS ENVIADOS:', dados);
+
+    fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(dados)
-  })
-  .then(response => {
-      if (!response.ok) throw new Error('Erro na requisição');
-      return response.json();
-  })
-  .then(data => console.log('Resposta do n8n:', data))
-  .catch(error => console.error('Erro ao enviar cadastro:', error));
+    })
+    .then(res => res.json())
+    .then(data => console.log('Resposta do n8n:', data))
+    .catch(err => console.error('Erro:', err));
+  });
+
 });

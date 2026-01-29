@@ -128,43 +128,50 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // === Payload para o n8n ===
-    const payload = {
-      nome,
-      email,
-      whatsapp,
-      data_nascimento: dataNascimento,
-      user_id: userId,
-      app,
+    document.addEventListener('DOMContentLoaded', function () {
+
+  const form = document.getElementById('formCadastro');
+
+  if (!form) {
+    console.error('Formulário não encontrado');
+    return;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // 👉 DADOS PRECISAM NASCER AQUI
+    const dados = {
+      nome: document.getElementById('nome').value,
+      email: document.getElementById('email').value,
+      whatsapp: document.getElementById('whatsapp').value,
+      data_nascimento: document.getElementById('data-nascimento').value,
       enviadoEm: new Date().toISOString()
     };
 
-    // === Envio ===
-    try {
-      form.querySelector('button[type="submit"]').disabled = true;
+    console.log('DADOS ENVIADOS:', dados);
 
-      const response = await fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dados)
-      });
+    fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dados)
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Erro no webhook');
+      return res.json();
+    })
+    .then(data => {
+      console.log('Resposta do n8n:', data);
+    })
+    .catch(err => {
+      console.error('Erro ao enviar:', err);
+    });
 
-      if (!response.ok) {
-        throw new Error('Erro ao enviar o formulário');
-      }
-
-      alert('Cadastro enviado com sucesso!');
-      form.reset();
-
-    } catch (error) {
-      console.error(error);
-      alert('Erro ao enviar. Tente novamente em instantes.');
-    } finally {
-      form.querySelector('button[type="submit"]').disabled = false;
-    }
   });
+
+});
 
   // ===== Funções auxiliares =====
 

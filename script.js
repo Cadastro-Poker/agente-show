@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
       nome: document.getElementById('nome').value,
       email: document.getElementById('email').value,
       whatsapp: document.getElementById('whatsapp').value,
+      id_usuario: document.getElementById('id-usuario').value,
+      app: document.getElementById('app').value,
       data_nascimento: document.getElementById('data-nascimento').value,
       enviadoEm: new Date().toISOString()
     };
@@ -94,15 +96,15 @@ document.addEventListener('DOMContentLoaded', function () {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(dados)
     })
-    .then(res => res.json())
-    .then(data => {
-      alert('🎉 Cadastro enviado com sucesso!');
-      form.reset(); // ✅ reset SOMENTE depois do envio
-    })
-    .catch(err => {
-      console.error('Erro:', err);
-      alert('❌ Erro ao enviar cadastro');
-    });
+      .then(res => res.json())
+      .then(data => {
+        alert('🎉 Cadastro enviado com sucesso!');
+        form.reset(); // ✅ reset SOMENTE depois do envio
+      })
+      .catch(err => {
+        console.error('Erro:', err);
+        alert('❌ Erro ao enviar cadastro');
+      });
   });
 
 });

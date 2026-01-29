@@ -88,6 +88,8 @@ document.getElementById('formCadastro').addEventListener('submit', function (e) 
     enviadoEm: new Date().toISOString()
   };
 
+console.log('DADOS ENVIADOS:', dados);
+
   // Envia para o webhook do n8n via ngrok
   fetch('https://terri-defunct-unidentifiably.ngrok-free.dev/webhook/cadastro-site', {
       method: 'POST',
